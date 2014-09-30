@@ -118,6 +118,7 @@
 // --------------
 // Return span width.
 // - $span: <map>
+$span-cache: ();
 @function get-span-width(
   $span
 ) {
@@ -128,6 +129,11 @@
   $columns  : susy-get(columns, $span);
   $gutters  : susy-get(gutters, $span);
   $spread   : susy-get(spread, $span);
+
+  $cache-key: $n$location$columns$gutters$spread;
+  @if map-has-key($span-cache, $cache-key) {
+    @return map-get($span-cache, $cache-key)
+  }
 
   $context  : null;
   $span-sum : null;
@@ -157,5 +163,6 @@
     $width: $n;
   }
 
+  $span-cache: map-merge($span-cache, ($cache-key: $width)) !global;
   @return $width;
 }
