@@ -1,9 +1,33 @@
 Changelog
 =========
 
-2.2.0 - UNRELEASED
+2.2.5 - May 14 2015
 -------------------
 
+- Pass grid arguments to overlay positioning mixin.
+
+
+2.2.3 - Apr 28 2015
+-------------------
+
+- Work around libsass fraction bug.
+
+
+2.2.2 - Jan 23 2015
+-------------------
+
+- Fix bug in npm package.
+
+
+2.2.1 - Jan 14 2015
+-------------------
+
+- Release npm ``susy`` package.
+- Add global ``$susy-media`` map for creating named breakpoints.
+- Add internal media-query support for ``susy-breakpoint``
+  without requiring the Breakpoint plugin.
+- ``susy-breakpoint`` mixin no longer requires ``$layout`` argument.
+  By default, no changes will be made to your existing layout.
 - Update ``global-box-sizing`` and the legacy ``border-box-sizing``
   mixins to optionally take another argument, ``$inherit``. This new
   argument is a boolean value that defaults to ``false``, meaning the
@@ -16,6 +40,21 @@ Changelog
   and all nested elements will inherit this change. This cascading
   effect can be prevented by explicitly setting ``box-sizing`` on the
   exceptions within the nested context.
+- Add ``su`` import at root level.
+- Both ``su`` and ``susy`` work with the latest LibSass master branch (3.0.2+).
+  There are a few exceptions:
+
+  + The ``susysone`` syntax
+  + ``overlay`` grid output
+  + The ``inherit`` option for ``global-box-sizing`` & ``border-box-sizing``
+
+
+2.1.3 - Jul 16 2014
+-------------------
+
+- Baseline grid image uses `px` instead of `%`.
+- Updated Sass dependency to work with 3.4.
+
 
 2.1.2 - Apr 28 2014
 -------------------

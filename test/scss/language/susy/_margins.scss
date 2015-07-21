@@ -1,7 +1,7 @@
 // Margin Syntax Tests
 // ===================
 
-@include output-test-module('Margin Syntax') {
+@include test-module('Margin Syntax') {
 
   // pre
   // ---
@@ -71,7 +71,7 @@
     @include assert-setup('wider', $grid: (1 2 3 2 1) .25 after) {
       .spacer {
         @include span(1 at 4);
-        height: rhythm(1);
+        height: 1rem;
       }
       .test, .expect { @include span(first 2); }
     }
@@ -160,8 +160,9 @@
     @include assert-output(
       'Items should have 2-columns margin before and after.'
     ) {
-      .test { @include squish(first 2, last 2); }
+      .test { @include squish(first 2, last 2 inspect); }
       .expect {
+        -susy-squish: first 2, last 2 inspect;
         margin-left: 35%;
         margin-right: 35%;
       }
