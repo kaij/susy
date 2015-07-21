@@ -85,7 +85,11 @@
 @function get-edge(
   $span
 ) {
-  $span       : parse-span($span);
+  $span: parse-span($span);
+  @if map-has-key($span, get-edge) {
+    @return map-get($span, get-edge);
+  }
+
   $edge       : susy-get(edge, $span);
 
   @if not($edge) {
@@ -122,6 +126,9 @@
   $span
 ) {
   $span       : parse-span($span);
+  @if map-has-key($span, get-location) {
+    @return map-get($span, get-location);
+  }
   $location   : susy-get(location, $span);
   $edge       : get-edge($span);
   $n          : susy-get(span, $span);

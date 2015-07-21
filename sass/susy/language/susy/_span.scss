@@ -5,18 +5,34 @@
 // ------------
 // Set a spanning element using shorthand syntax.
 // - $span  : <span>
+$span-lookup: ();
 @mixin span(
   $span
 ) {
-  $inspect: $span;
-  $span: parse-span($span);
-  $output: span-math($span);
-  $nesting: susy-get(span, $span);
-  $clear: susy-get(clear, $span);
+  $key: $span + inspect(map-merge($susy-defaults, $susy));
+  @if map-has-key($span-lookup, $key) {
+    $_cached: map-get($span-lookup, $key);
+    $inspect: map-get($_cached, inspect);
+    $span: map-get($_cached, span);
+    $output: map-get($_cached, output);
+    $nesting: map-get($_cached, nesting);
+    $clear: map-get($_cached, clear);
+    $box: map-get($_cached, box);
+    $content-box: map-get($_cached, content-box);
+  } @else {
+    $inspect: $span;
+    $span: parse-span($span);
+    $span: map-merge($span, process-span($span));
+    $output: span-math($span);
+    $nesting: susy-get(span, $span);
+    $clear: susy-get(clear, $span);
 
-  $box: susy-get(box-sizing, $span);
-  $content-box: if(susy-get(global-box-sizing) != 'border-box', true, false);
-  $box: $box or if(is-inside($span) and $content-box, border-box, null);
+    $box: susy-get(box-sizing, $span);
+    $content-box: if(susy-get(global-box-sizing) != 'border-box', true, false);
+    $box: $box or if(is-inside($span) and $content-box, border-box, null);
+
+    $span-lookup: map-merge( $span-lookup, ($key: (inspect: $inspect, span: $span, output: $output, nesting: $nesting, clear: $clear, box: $box, content-box: $content-box))) !global;
+  }
 
   @if $clear == break {
     @include break;
@@ -33,6 +49,33 @@
   } @else {
     @content;
   }
+  @content;
+}
+
+@function process-span($span) {
+  @if not map-has-key($span, gutter-position) {
+    $span: map-merge($span, (gutter-position: susy-get(gutter-position, $span)));
+  }
+  @if not map-has-key($span, gutter-override) {
+    $span: map-merge($span, (gutter-override: susy-get(gutter-override, $span)));
+  }
+  @if not map-has-key($span, get-edge) {
+    $span: map-merge($span, (get-edge: get-edge($span)));
+  }
+  @if not map-has-key($span, columns) {
+    $span: map-merge($span, (columns: susy-get(columns, $span)));
+  }
+  @if not map-has-key($span, get-location) {
+    $span: map-merge($span, (get-location: get-location($span)));
+  }
+  @if not map-has-key($span, is-inside) {
+    $span: map-merge($span, (is-inside: is-inside($span)));
+  }
+  @if not map-has-key($span, is-split) {
+    $span: map-merge($span, (is-split: is-split($span)));
+  }
+
+  @return $span;
 }
 
 // Span [function]
@@ -120,7 +163,7 @@
 // --------------
 // Return span width.
 // - $span: <map>
-$span-cache: ();
+$span-cache: () !global;
 @function get-span-width(
   $span
 ) {
