@@ -8,7 +8,15 @@
 @mixin output(
   $styles
 ) {
+  $_reqs: (
+    variable: rhythm-unit rem-with-px-fallback,
+    mixin: rem,
+  );
+  $rem_support: susy-support(rem, $_reqs, $warn: false);
+
   @each $prop, $val in $styles {
-    @include susy-support($prop, $val);
+    @if $val != null {
+      @include susy-support($prop, $val, $rem_support);
+    }
   }
 }

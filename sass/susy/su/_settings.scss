@@ -54,7 +54,7 @@ $susy: () !default;
   $key,
   $layout: map-merge($susy-defaults, $susy)
 ) {
-  //$layout: if(type-of($layout) == map, $layout, parse-grid($layout));
+  $layout: if(type-of($layout) == map, $layout, parse-grid($layout));
   @if _susy-deep-has-key($layout, $key...) {
     @return _susy-deep-get($layout, $key...);
   }

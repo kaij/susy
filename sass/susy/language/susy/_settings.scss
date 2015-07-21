@@ -135,17 +135,11 @@ $susy-keywords: (
 
 // Parse Span
 // ----------
-$parse-span-cache: ();
 @function parse-span(
   $short,
   $key: span
 ) {
   $_return: ();
-
-  $cache-key: $short$key;
-  @if map-has-key($parse-span-cache, $cache-key) {
-    @return map-get($parse-span-cache, $cache-key);
-  }
 
   @if type-of($short) == map {
     $_return: $short;
@@ -185,7 +179,6 @@ $parse-span-cache: ();
     $_return: map-merge($_return, parse-grid($short));
   }
 
-  $parse-span-cache: map-merge($parse-span-cache, ($cache-key: $_return)) !global;
   @return $_return;
 }
 
